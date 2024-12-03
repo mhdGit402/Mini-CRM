@@ -11,23 +11,25 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('clients', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+            $table->string('contact_name');
+            $table->string('contact_email');
+            $table->string('contact_phone_number');
+            $table->string('company_name');
+            $table->string('company_address');
+            $table->string('company_city');
+            $table->string('company_zip');
+            $table->string('company_vat');
             $table->softDeletes(); // Add this line for soft deletes
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('clients');
     }
 };
