@@ -39,7 +39,7 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        //
+        return inertia('Project', ['projects' => $project->load('client')]);
     }
 
     /**
@@ -66,6 +66,10 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        $project->delete();
+        if (auth()->user()->hasRole('admin')) {
+            $project->delete();
+        } else {
+            abort(403, 'Unauthorized action.');
+        }
     }
 }

@@ -45,7 +45,6 @@ class ClientController extends Controller
      */
     public function edit(Client $client)
     {
-        $this->authorize('edit', $client);
         return inertia('Client/Edit', ['client' => $client]);
     }
 
@@ -54,7 +53,6 @@ class ClientController extends Controller
      */
     public function update(UpdateClientRequest $request, Client $client)
     {
-        $this->authorize('update', $client);
         $client->update($request->validated());
     }
 
@@ -63,6 +61,10 @@ class ClientController extends Controller
      */
     public function destroy(Client $client)
     {
-        $client->delete();
+        if (auth()->user()->hasRole('admin')) {
+            $client->delete();
+        } else {
+            abort(403, 'Unauthorized action.');
+        }
     }
 }

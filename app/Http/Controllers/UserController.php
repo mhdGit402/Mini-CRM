@@ -22,7 +22,10 @@ class UserController extends Controller
      */
     public function create()
     {
-        return inertia('User/Create');
+        if (auth()->user()->hasRole('admin')) {
+            return inertia('User/Create');
+        }
+        abort(403, 'Unauthorized action.');
     }
 
     /**
@@ -30,7 +33,8 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        User::create($request->validated());
+        $user = User::create($request->validated());
+        $user->assignRole('user'); // Assign the 'user' role to the user
     }
 
     /**
@@ -46,8 +50,10 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        $this->authorize('edit', $user);
-        return inertia('User/Edit', ['user' => $user]);
+        if (auth()->user()->hasRole('admin')) {
+            return inertia('User/Edit', ['user' => $user]);
+        }
+        abort(403, 'Unauthorized action.');
     }
 
     /**
@@ -55,8 +61,10 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        $this->authorize('update', $user);
-        $user->update($request->validated());
+        if (auth()->user()->hasRole('admin')) {
+            $user->update($request->validated());
+        }
+        abort(403, 'Unauthorized action.');
     }
 
     /**
@@ -64,6 +72,10 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $user->delete();
+        if (auth()->user()->hasRole('admin')) {
+            $user->delete();
+        } else {
+            abort(403, 'Unauthorized action.');
+        }
     }
 }

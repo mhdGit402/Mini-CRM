@@ -37,8 +37,7 @@ class ClientPolicy
      */
     public function edit(User $user, Client $client): bool
     {
-        return true;
-        // return $user->id === $client->user_id;
+        //
     }
 
     /**
@@ -46,8 +45,7 @@ class ClientPolicy
      */
     public function update(User $user, Client $client): bool
     {
-        return true;
-        // return $user->id === $client->user_id;
+        //
     }
 
     /**

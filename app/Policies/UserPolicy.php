@@ -11,8 +11,7 @@ class UserPolicy
      */
     public function edit(User $user): bool
     {
-        return true;
-        // return $user->id === $task->user_id;
+        //
     }
 
     /**
@@ -20,7 +19,6 @@ class UserPolicy
      */
     public function update(User $user): bool
     {
-        return true;
-        // return $user->id === $task->user_id;
+        //
     }
 }

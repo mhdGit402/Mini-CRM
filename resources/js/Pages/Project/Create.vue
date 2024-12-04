@@ -30,8 +30,10 @@ const form = useForm({
 });
 
 const createProject = () => {
-    let date = new Date(form.deadline_at);
-    form.deadline_at = date.toISOString().split("T")[0];
+    if (form.deadline_at) {
+        let date = new Date(form.deadline_at);
+        form.deadline_at = date.toISOString().split("T")[0];
+    }
     form.post("/project", {
         preserveScroll: true,
         onSuccess: () => {
@@ -129,7 +131,7 @@ const createProject = () => {
                                 </select>
 
                                 <InputError
-                                    :message="form.errors.status"
+                                    :message="form.errors.client_id"
                                     class="mt-2"
                                 />
                             </div>

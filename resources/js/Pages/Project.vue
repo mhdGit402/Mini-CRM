@@ -2,14 +2,19 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import { computed } from "vue";
+
 const { projects } = defineProps({
     projects: {
-        type: Array,
+        type: [Array, Object],
         required: true,
     },
 });
 
-projects.map((project) => {
+const computedProjects = computed(() => {
+    return Array.isArray(projects) ? projects : [projects];
+});
+
+computedProjects.value.map((project) => {
     project.status =
         project.status.charAt(0).toUpperCase() + project.status.slice(1);
 });
@@ -80,7 +85,7 @@ const deleteProject = (id) => {
                 </thead>
                 <tbody>
                     <tr
-                        v-for="project in projects"
+                        v-for="project in computedProjects"
                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                     >
                         <th

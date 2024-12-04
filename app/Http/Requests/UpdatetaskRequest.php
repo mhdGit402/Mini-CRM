@@ -26,7 +26,7 @@ class UpdatetaskRequest extends FormRequest
             'description' => 'nullable|string', // Description is optional and must be a string
             'user_id' => 'required|exists:users,id', // User ID is required and must exist in the users table
             'client_id' => 'required|exists:clients,id', // Client ID is required and must exist in the clients table
-            'project_id' => 'required|exists:project,id', // Project ID is required and must exist in the projects table
+            'project_id' => 'required|exists:projects,id', // Project ID is required and must exist in the projects table
             'deadline_at' => 'required|date|after:today', // Deadline is required, must be a valid date, and must be after today
             'status' => 'required|in:open,in progress,blocked,cancelled,completed', // Status is required and must be one of the defined enum values
         ];

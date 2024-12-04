@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\task;
+use App\Models\Task;
 use App\Http\Requests\StoretaskRequest;
 use App\Http\Requests\UpdatetaskRequest;
+use App\Models\Client;
+use App\Models\Project;
 
 class TaskController extends Controller
 {
@@ -13,7 +15,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        return inertia('Task');
+        return inertia('Task', ['tasks' => Task::with(['client:id,company_name', 'project:id,title'])->get()]);
     }
 
     /**
@@ -21,7 +23,7 @@ class TaskController extends Controller
      */
     public function create()
     {
-        return inertia('Task/Create');
+        return inertia('Task/Create', ['clients' => Client::select('id', 'company_name')->get(), 'projects' => Project::select('id', 'title')->get()]);
     }
 
     /**
@@ -45,8 +47,8 @@ class TaskController extends Controller
      */
     public function edit(task $task)
     {
-        $this->authorize('edit', ['task' => $task]);
-        return inertia('Task/Edit');
+        $this->authorize('edit', $task);
+        return inertia('Task/Edit', ['task' => $task->load(['client:id,company_name', 'project:id,title'])]);
     }
 
     /**
@@ -63,6 +65,10 @@ class TaskController extends Controller
      */
     public function destroy(task $task)
     {
-        $task->delete();
+        if (auth()->user()->hasRole('admin')) {
+            $task->delete();
+        } else {
+            abort(403, 'Unauthorized action.');
+        }
     }
 }

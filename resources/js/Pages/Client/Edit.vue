@@ -9,7 +9,7 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 
 const { client } = defineProps({
     client: {
-        type: Array,
+        type: [Array, Object],
         required: true,
     },
 });
@@ -59,7 +59,7 @@ const createClient = () => {
                             <p
                                 class="mt-1 text-sm text-gray-600 dark:text-gray-400"
                             >
-                                Update client {{ client.company_name }}
+                                Update client {{ form.company_name }}
                             </p>
                         </header>
                         <form
